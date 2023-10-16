@@ -14,7 +14,7 @@ export interface Episode {
 export interface EpsodeCreateAttributes extends Optional<Episode, 'videoUrl' | 'secondsLong'>{}
 export interface EpisodeInstance extends Model<Episode, EpsodeCreateAttributes>, Episode {}
 
-export const Epsode = sequlize.define<EpisodeInstance, Episode>('episodes', {
+export const Episode = sequlize.define<EpisodeInstance, Episode>('Episodes', {
     id: {
         allowNull: false,
         autoIncrement: true,

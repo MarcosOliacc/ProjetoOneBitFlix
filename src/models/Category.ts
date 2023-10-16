@@ -9,7 +9,7 @@ export interface CategoryCreationAttributes extends Optional<Category,'id'>{}
 
 export interface CategoryInstance extends Model<Category,CategoryCreationAttributes>, Category {}
 
-export const Category = sequlize.define<CategoryInstance, Category>('category', {
+export const Category = sequlize.define<CategoryInstance, Category>('Category', {
     id: {
         allowNull: false,
         autoIncrement: true,
