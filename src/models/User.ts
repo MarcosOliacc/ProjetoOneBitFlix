@@ -15,7 +15,9 @@ export interface User {
 
 export interface UserCreateAttributes extends Optional<User, 'id'>{}
 
-export interface UserInstace extends Model<User, UserCreateAttributes>, User{}
+export interface UserInstace extends Model<User, UserCreateAttributes>, User{
+  checkPassword: (password: string, callbackfn: (err:Error | undefined, isSame: boolean) => void) => void
+}
 
 export const User = sequlize.define<UserInstace,User>('Users', {
     id: {
@@ -68,3 +70,13 @@ export const User = sequlize.define<UserInstace,User>('Users', {
         }
     }
 })
+
+User.prototype.checkPassword = function (password: string, callbackfn: (err?:Error | undefined, isSame?: boolean) => void) {
+  bcrypt.compare(password, this.password, (err,isSame)=>{
+    if(err) {
+      callbackfn(err)
+    } else {
+      callbackfn(err, isSame)
+    }
+  })
+}
