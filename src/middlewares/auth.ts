@@ -15,12 +15,27 @@ export function ensureAuth(req: AuthenticatedRequest, res: Response, next: NextF
 
     const token = authorizationHeader.replace(/Bearer /, '')
 
-    jwtService.verifyToken(token, (err, decoded)=> {
+    jwtService.verifyToken(token, async (err, decoded)=> {
         if (err || typeof decoded === 'undefined') return res.status(401).json({message: 'Invalid Token'})
 
-        userService.findByEmail((decoded as JwtPayload).email).then(user => {
-            req.user = user
-            next()
-        })
+        const user = await userService.findByEmail((decoded as JwtPayload).email)
+        req.user = user
+        next()
     })
+}
+
+export function ensureAuthViaQuery(req: AuthenticatedRequest, res: Response, next:NextFunction) {
+    const { token } = req.query
+    if (!token) return res.status(401).json({message: 'token not finded'})
+
+    if (typeof token !== 'string') return res.status(400).json({ message: 'Token has be string.'})
+
+    jwtService.verifyToken(token, async (err, decoded) => {
+        if (err || typeof decoded === 'undefined') return res.status(401).json({message: 'Invalid Token'})
+
+        const user = await userService.findByEmail((decoded as JwtPayload).email)
+        req.user = user
+        next()
+    })
+
 }
