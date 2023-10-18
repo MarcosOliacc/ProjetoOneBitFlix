@@ -10,7 +10,7 @@ export const courseService = {
                 ['thumbnail_url', 'thumbnailUrl']
             ],
             include: {
-                association: 'Episodes',
+                association: 'episodes',
                 attributes: [
                     'id',
                     'name',
@@ -24,5 +24,19 @@ export const courseService = {
             }
         })
         return courseWithEpisodes
+    },
+    getFeaturedCourses:async () => {
+        const featuredCourses = await Course.findAll({
+            attributes: [
+                'id',
+                'name',
+                'synopsis',
+                ['thumbnail_url', 'thumbnailUrl']
+            ],
+            where: { featured: true }
+        })
+        const randomCourses = featuredCourses.sort(()=> 0.5 - Math.random())
+
+        return randomCourses.slice(0, 3)
     }
 }
