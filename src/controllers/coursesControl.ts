@@ -63,5 +63,15 @@ export const coursesController = {
             }
         }
     },
+    popular:async (req:Request,res: Response) => {
+        try {
+            const topTen = await courseService.getTopTen()
+            return res.json(topTen)
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({ message: error.message })
+            }
+        }
+    }
     
 }
