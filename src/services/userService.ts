@@ -9,7 +9,7 @@ export const userService = {
         return user
     },
     create: async (attributes: UserCreateAttributes) => {
-        const user = User.create(attributes)
+        const user = await User.create(attributes)
         return user
     },
     

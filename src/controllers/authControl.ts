@@ -4,7 +4,7 @@ import { jwtService } from "../services/jwtService";
 
 export const authController = {
     // POST /auth/register
-    register:async (req:Request, res: Response) => {
+    register: async (req:Request, res: Response) => {
         const { firstName, lastName, email, password, birth, phone} = req.body
 
         try {

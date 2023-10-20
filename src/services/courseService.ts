@@ -61,7 +61,7 @@ export const courseService = {
                     [Op.iLike]: `%${name}%`
                 }
             },
-            limit: perPage,
+            limit: perPage, 
             offset
         })
         return {

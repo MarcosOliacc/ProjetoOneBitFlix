@@ -4,6 +4,7 @@ import { coursesController } from "./controllers/coursesControl"
 import { episodesController } from "./controllers/episodesControl"
 import { authController } from "./controllers/authControl"
 import { ensureAuth, ensureAuthViaQuery } from "./middlewares/auth"
+import { favoritesController } from "./controllers/favoritesControl"
 
 const router = express.Router()
 router.post('/auth/register', authController.register)
@@ -19,5 +20,6 @@ router.get('/courses/:id', ensureAuth, coursesController.show)
 
 router.get('/episodes/stream', ensureAuthViaQuery, episodesController.stream)
 
+router.post('/favorites',ensureAuth,favoritesController.save)
 
 export { router }
