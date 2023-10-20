@@ -1,8 +1,8 @@
-import { Favotire } from "../models/Favorite"
+import { Favorite } from "../models/Favorite"
 
 export const favoriteService = {
     findByUserId: async (userId:number) => {
-        const favorite = await Favotire.findAll({
+        const favorite = await Favorite.findAll({
             where: { userId },
             include: {
                 association: 'Course',
@@ -21,11 +21,11 @@ export const favoriteService = {
         }
     },
     create: async (userId: number,courseId: number) => {
-        const favorite = await Favotire.create({ userId, courseId })
+        const favorite = await Favorite.create({ userId, courseId })
         return favorite
     },
     delete: async (userId: number, courseId: number) => {
-        await Favotire.destroy({
+        await Favorite.destroy({
             where: { userId, courseId}
         })
     }
