@@ -53,7 +53,18 @@ export const episodeService = {
         return watch
     },
     setWatchTime:async ({userId, episodeId, seconds}: WatchTimeAttributes) => {
-        const watch = await WatchTime.create({ userId, episodeId, seconds })
-        return watch
+        const watchAlready = await WatchTime.findOne({
+            where: { userId, episodeId }
+        })
+        if(watchAlready) {
+            watchAlready.seconds = seconds
+            await watchAlready.save()
+            return watchAlready
+        } else {
+            const watch = await WatchTime.create({ userId, episodeId, seconds })
+            return watch  
+        }
+
+
     }
 }
