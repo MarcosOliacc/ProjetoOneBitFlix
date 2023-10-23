@@ -1,5 +1,28 @@
 import { User } from "../models"
+import { EpisodeInstance } from "../models/Episode"
 import { UserCreateAttributes } from "../models/User"
+
+function filterLastEpisodesByCourses (episodes: EpisodeInstance[]) {
+    const coursesOnList: number[] = []
+
+    const lastEpisodes = episodes.reduce((currentList, episode)=>{
+        if(!coursesOnList.includes(episode.courseId)) {
+            coursesOnList.push(episode.courseId)
+            currentList.push(episode)
+            return currentList
+        }
+        const episodeFromSameCourse = currentList.find(ep => ep.courseId === episode.courseId)
+        if(episodeFromSameCourse!.order > episode.order) return currentList 
+
+        const listWithoutEpisodesFromSameCourse = currentList.filter(ep=> ep.courseId !== episode.courseId) 
+        listWithoutEpisodesFromSameCourse.push(episode)
+
+        return listWithoutEpisodesFromSameCourse
+
+    }, [] as EpisodeInstance[])
+
+    return lastEpisodes
+}
 
 export const userService = {
     findByEmail: async (email: string) => {
@@ -12,5 +35,46 @@ export const userService = {
         const user = await User.create(attributes)
         return user
     },
+    getKeepWatching: async (userId: number) => {
+        const userWatchingEpisodes = await User.findByPk(userId, {
+            
+            include: {
+                association: 'Episodes',
+                attributes: [
+                'id',
+                'name',
+                'synopsis',
+                'order',
+                ['video_url', 'videoUrl'],
+                ['seconds_long', 'secondsLong'],
+                ['course_id', 'courseId']
+              ],
+                include: [{
+                    association: 'Course',
+                    attributes: [
+                        'id',
+                        'name',
+                        'synopsis',
+                        ['thumbnail_url', 'thumbnailUrl']
+                    ],
+                    as: 'course'
+                }],
+                through: {
+                    as: 'watchTime',
+                    attributes: [
+                        'seconds',
+                        ['updated_at', 'updatedAt']
+                    ]
+                }
+            }
+        })
+        if(!userWatchingEpisodes) throw new Error('user not found')
+
+        const keepWatching = filterLastEpisodesByCourses(userWatchingEpisodes.Episodes!)
+        // @ts-ignore
+        
+
+        return keepWatching.sort((a,b)=> a.watchTime.updatedAt < b.watchTime.updatedAt ? 1 : -1)
+    }
     
 }

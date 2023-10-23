@@ -51,7 +51,6 @@ export const coursesController = {
 
         try {
             const course = await courseService.findByIdWithEpisodes(courseId)
-            
             if(!course) return res.status(404).json({message: 'course not found'})
             
             const liked = await likeService.isLiked(userId, Number(courseId))
