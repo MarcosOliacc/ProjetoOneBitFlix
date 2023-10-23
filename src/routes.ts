@@ -36,5 +36,6 @@ router.get('/watching', ensureAuth, userController.watching)
 
 router.get('/account', ensureAuth, userController.show)
 router.put('/account', ensureAuth, userController.update)
+router.put('/accountPassword', ensureAuth, userController.updatePassword)
 
 export { router }
