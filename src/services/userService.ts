@@ -12,7 +12,7 @@ function filterLastEpisodesByCourses (episodes: EpisodeInstance[]) {
             return currentList
         }
         const episodeFromSameCourse = currentList.find(ep => ep.courseId === episode.courseId)
-        if(episodeFromSameCourse!.order > episode.order) return currentList 
+        if(episodeFromSameCourse!.order > episode.order) return currentList
 
         const listWithoutEpisodesFromSameCourse = currentList.filter(ep=> ep.courseId !== episode.courseId) 
         listWithoutEpisodesFromSameCourse.push(episode)
@@ -72,9 +72,17 @@ export const userService = {
 
         const keepWatching = filterLastEpisodesByCourses(userWatchingEpisodes.Episodes!)
         // @ts-ignore
-        
-
         return keepWatching.sort((a,b)=> a.watchTime.updatedAt < b.watchTime.updatedAt ? 1 : -1)
+    },
+    update: async (id: number, attributes:{
+        firstName: string,
+        lastName: string,
+        phone: string,
+        birth: Date,
+        email: string
+    }) => {
+        const [affectedRows, updatedUsers] = await User.update(attributes,{ where: { id }, returning: true})
+        return updatedUsers[0]
     }
     
 }
