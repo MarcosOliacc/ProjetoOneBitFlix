@@ -46,10 +46,11 @@ export const coursesController = {
     },
     // GET /courses/:id ----------------------------------
     show:async (req:AuthenticatedRequest, res: Response) => {
-        const courseId = req.params.id
-        const userId = req.user!.id
+        
 
         try {
+            const courseId = req.params.id
+            const userId = req.user!.id
             const course = await courseService.findByIdWithEpisodes(courseId)
             if(!course) return res.status(404).json({message: 'course not found'})
             

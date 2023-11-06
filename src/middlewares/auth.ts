@@ -11,7 +11,7 @@ export interface AuthenticatedRequest extends Request {
 export function ensureAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     const authorizationHeader = req.headers.authorization
 
-    if(!authorizationHeader) return res.status(401).json({message: 'token not finded'})
+    if(!authorizationHeader) return res.status(401).json({message: 'token not found'})
 
     const token = authorizationHeader.replace(/Bearer /, '')
 

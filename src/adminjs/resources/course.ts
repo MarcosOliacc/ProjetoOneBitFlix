@@ -14,7 +14,7 @@ export const courseResourceFeatures: FeatureType[] = [
   uploadFileFeature({
     provider: {
       local: {
-        bucket: path.join(__dirname, '..','..','..','public')
+        bucket: path.join(__dirname, '..','..','..','public'),
       }
     },
     properties: {

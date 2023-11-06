@@ -35,6 +35,7 @@ export const userController = {
         } catch (error) {
             if (error instanceof Error) {
                 return res.status(400).json({ message: error.message })
+                
             }
         }
     },
@@ -44,7 +45,7 @@ export const userController = {
         user.checkPassword(currentPassword, async (err, isSame)=> {
             try {
                 if (err) return res.status(400).json({message: err.message})
-                if (!isSame) return res.status(400).json({message: 'incorrect password'})
+                if (!isSame) return res.status(401).json({message: 'incorrect password'})
                 await userService.updatePassword(user.id,newPassword)
                 return res.status(204).send()
             } catch (error) {

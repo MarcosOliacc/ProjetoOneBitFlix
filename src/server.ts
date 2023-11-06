@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import express from "express"
 import { sequlize } from "./database"
 import { adminJSRouter, adminjs } from "./adminjs"
