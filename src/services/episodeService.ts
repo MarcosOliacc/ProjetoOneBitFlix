@@ -14,22 +14,6 @@ export const episodeService = {
                 }
                 res.writeHead(206,head)
 
-                file.pipe(res)
-            } else {
-                const head = {
-                    'Content-Length': fileStat.size,
-                    'Content-Type': 'video/mp4'
-                }
-                res.writeHead(200, head)
-
-                fs.createReadStream(filePath).pipe(res)
-            }
-        } catch (error) {
-            if(error instanceof Error) {
-                return res.status(400).json({ message: error.message })
-            }
-        }
-
     },
     getWatchTime: async (userId: number, episodeId: number ) => {
         const watch = await WatchTime.findOne({
